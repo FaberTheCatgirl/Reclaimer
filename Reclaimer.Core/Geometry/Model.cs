@@ -58,6 +58,8 @@ namespace Reclaimer.Geometry
             set => Scale = new Vector3(value);
         }
 
+        public bool HasTransform => !Transform.IsIdentity || Scale != Vector3.One;
+
         public IEnumerable<int> MeshIndices => MeshRange.Index >= 0 ? Enumerable.Range(MeshRange.Index, MeshRange.Count) : Enumerable.Empty<int>();
 
         public Matrix4x4 GetFinalTransform()

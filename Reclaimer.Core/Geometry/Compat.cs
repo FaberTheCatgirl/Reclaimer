@@ -228,23 +228,24 @@ namespace Reclaimer.Geometry
                         meshAddressList.Add(bw.BaseStream.Position);
                         bw.Write(0);
 
-                        if (perm.Transform.IsIdentity)
+                        if (!perm.HasTransform)
                             bw.Write(float.NaN);
                         else
                         {
+                            var transform = perm.GetFinalTransform();
                             bw.Write(1f);
-                            bw.Write(perm.Transform.M11);
-                            bw.Write(perm.Transform.M12);
-                            bw.Write(perm.Transform.M13);
-                            bw.Write(perm.Transform.M21);
-                            bw.Write(perm.Transform.M22);
-                            bw.Write(perm.Transform.M23);
-                            bw.Write(perm.Transform.M31);
-                            bw.Write(perm.Transform.M32);
-                            bw.Write(perm.Transform.M33);
-                            bw.Write(perm.Transform.M41);
-                            bw.Write(perm.Transform.M42);
-                            bw.Write(perm.Transform.M43);
+                            bw.Write(transform.M11);
+                            bw.Write(transform.M12);
+                            bw.Write(transform.M13);
+                            bw.Write(transform.M21);
+                            bw.Write(transform.M22);
+                            bw.Write(transform.M23);
+                            bw.Write(transform.M31);
+                            bw.Write(transform.M32);
+                            bw.Write(transform.M33);
+                            bw.Write(transform.M41);
+                            bw.Write(transform.M42);
+                            bw.Write(transform.M43);
                         }
                     }
                 }
@@ -255,7 +256,7 @@ namespace Reclaimer.Geometry
                 {
                     foreach (var (permName, perm, part, meshIndex) in region.Permutations.SelectMany(ExpandPermutation))
                     {
-                        var scale1 = perm.Transform.IsIdentity ? scale : 1;
+                        var scale1 = perm.HasTransform ? 1 : scale;
 
                         if (dupeDic.TryGetValue(meshIndex, out var address))
                         {

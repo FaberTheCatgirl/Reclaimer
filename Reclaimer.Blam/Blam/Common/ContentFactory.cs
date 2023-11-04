@@ -166,7 +166,7 @@ namespace Reclaimer.Blam.Common
 
         public static bool TryGetPrimaryContent(Halo5.ModuleItem item, out object content)
         {
-            switch (item.ClassCode)
+            switch (item?.ClassCode)
             {
                 case bitmap:
                     if (TryGetBitmapContent(item, out var bitmapContent))
@@ -175,6 +175,7 @@ namespace Reclaimer.Blam.Common
                         return true;
                     }
                     break;
+                case scenario_structure_bsp:
                 case render_model:
                     if (TryGetGeometryContent(item, out var geometryContent))
                     {
@@ -192,7 +193,7 @@ namespace Reclaimer.Blam.Common
         {
             content = null;
 
-            if (item.ClassCode != bitmap)
+            if (item?.ClassCode != bitmap)
                 return false;
 
             content = item.ReadMetadata<Halo5.bitmap>();
@@ -202,12 +203,12 @@ namespace Reclaimer.Blam.Common
 
         public static bool TryGetGeometryContent(Halo5.ModuleItem item, out IContentProvider<Scene> content)
         {
-            content = null;
-
-            if (item.ClassCode != render_model)
-                return false;
-
-            content = item.ReadMetadata<Halo5.render_model>();
+            content = item?.ClassCode switch
+            {
+                render_model => item.ReadMetadata<Halo5.render_model>(),
+                scenario_structure_bsp => item.ReadMetadata<Halo5.scenario_structure_bsp>(),
+                _ => null
+            };
 
             return content != null;
         }
