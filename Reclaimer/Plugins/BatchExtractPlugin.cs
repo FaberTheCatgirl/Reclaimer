@@ -197,7 +197,8 @@ namespace Reclaimer.Plugins
                 foreach (var child in node.Items)
                     BatchQueue(child, outputFolder);
             }
-            else
+            
+            if (node.Tag != null)
             {
                 var item = GetExtractable(node.Tag, outputFolder);
                 if (item != null)
