@@ -1,7 +1,7 @@
 from typing import List, Iterator, Callable
 from collections.abc import Sequence
 
-from .vectors.VectorDescriptor import VectorDescriptor
+from .Vectors import VectorDescriptor
 
 __all__ = [
     'VertexBuffer',
